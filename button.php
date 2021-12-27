@@ -12,7 +12,7 @@
 
 <a class="btn btn-primary" href="https://contact-picker.glitch.me/" role="button">Contact</a>
 
-<a class="btn btn-primary" href="face-detection.html" role="button">Face Detecion</a>
+<a class="btn btn-primary" href="/face-detec/face-detection.html" role="button">Face Detecion</a>
 
 <a class="btn btn-primary" href="wifi.php" role="button">Wifi</a>
 
