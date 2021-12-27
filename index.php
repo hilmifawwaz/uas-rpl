@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/assets/images/logo-96x96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
     <meta name="theme-color" content="#FFE1C4">
