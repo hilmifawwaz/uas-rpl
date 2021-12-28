@@ -16,4 +16,4 @@
 
 <a class="btn btn-primary" href="wifi.php" role="button">Wifi</a>
 
-<a class="btn btn-primary" href="https://yal.cc/r/20/devicemotion/" role="button">Accelerometer</a>
+<a class="btn btn-primary" href="accelerometer.php" role="button">Accelerometer</a>
