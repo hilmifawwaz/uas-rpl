@@ -1,102 +1,88 @@
-<html><head>
-	<title>HTML5 accelerometer/DeviceMotion demo</title>
-	<meta name ="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-	<style>
-	body {
-		font: 15px sans-serif;
-		height: 100vh;
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		background: #889EC5;
-		color: white;
-		overflow-x: hidden;
-	}
-	#dm_status, footer {
-		text-align: center;
-		padding: 0.5em;
-	}
-	a, a:visited {
-		color: white;
-		padding: 0 0.5em;
-	}
-	#dm_graphs {
-		width: 100%;
-		height: auto;
-		image-rendering: optimizeSpeed;
-		image-rendering: pixelated;
-		background: rgba(0, 0, 0, 0.7);
-	}
-	</style>
-</head><body>
-	<div id="dm_status">Please tap somewhere in your device?</div>
-	<canvas id="dm_graphs" width="640" height="120"></canvas>
-	<footer><a href="https://yal.cc/js-device-motion">Related blog post</a></footer>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Gyroscope</title>
+
+	<!-- panggil css -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+</head>
+
+<body>
+	<div class="content">
+
+		<div class="text-center">
+			<h3>Gyroscope</h3>
+
+			<a class="btn btn-success" role="button" id="start_demo">Start demo</a><br>
+
+			<h4>Num. of datapoints: <span id="num-observed-events">0</span></h4><br>
+			<h4>Gyroscope</h4>
+			<ul>
+				<li>X-axis: <span id="Gyroscope_x">0</span><span>&deg;/s</span></li>
+				<li>Y-axis: <span id="Gyroscope_y">0</span><span>&deg;/s</span></li>
+				<li>Z-axis: <span id="Gyroscope_z">0</span><span>&deg;/s</span></li>
+			</ul>
+
+			<p>Sumber: https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent/rotationRate#syntax</p>
+		</div>
+	</div>
+
+	<!-- method -->
 	<script>
-	window.addEventListener("error", function(e) {
-		alert(e);
-	});
-	//
-	function requestDeviceMotion(callback) {
-		if (window.DeviceMotionEvent && DeviceMotionEvent.requestPermission) {
-			DeviceMotionEvent.requestPermission().then(function(state) {
-				if (state == "granted") {
-					callback(null);
-				} else callback(new Error("Permission denied by user"));
-			}, function(err) {
-				callback(err);
-			});
-		} else if (window.ondevicemotion !== undefined) {
-			callback(null);
-		} else callback(new Error("DeviceMotion is not supported."));
-	}
-	//
-	var canvas = document.getElementById("dm_graphs");
-	var ctx = canvas.getContext("2d");
-	var graphX = 0;
-	function updateFancyGraphs(e) {
-		var acc = e.acceleration || e.accelerationIncludingGravity;
-		ctx.fillStyle = "white";
-		ctx.fillRect(graphX, 0, 2, canvas.height);
-		ctx.clearRect(graphX, 0, 1, canvas.height);
-		var gh = canvas.height / 3;
-		var gh2 = gh / 2;
-		function drawGraph(val, pos, color) {
-			if (val == null) val = 0;
-			var size = Math.max(-gh2, Math.min(val * 20, gh2));
-			ctx.fillStyle = color;
-			ctx.fillRect(graphX, gh * pos + gh2, 1, size);
+		function incrementEventCount() {
+			let counterElement = document.getElementById("num-observed-events");
+			let eventCount = parseInt(counterElement.innerHTML);
+			counterElement.innerHTML = eventCount + 1;
 		}
-		drawGraph(acc.x, 0, "red");
-		drawGraph(acc.y, 1, "lime");
-		drawGraph(acc.z, 2, "aqua");
-		graphX = (graphX + 1) % canvas.width;
-	}
-	//
-	function resizeCanvas() {
-		var w = window.innerWidth || document.body.offsetWidth;
-		if (canvas.width != w) canvas.width = w;
-	}
-	window.addEventListener("resize", resizeCanvas);
-	window.addEventListener("deviceorientation", resizeCanvas);
-	resizeCanvas();
-	//
-	function firstClick(e) {
-		var status = document.getElementById("dm_status");
-		if (e) status.innerText = "Requesting...";
-		requestDeviceMotion(function(err) {
-			if (!err) {
-				status.innerText = "OK!";
-				window.removeEventListener("click", firstClick);
-				window.removeEventListener("touchend", firstClick);
-				window.addEventListener("devicemotion", updateFancyGraphs);
-			} else if (e) {
-				status.innerText = "" + err;
+
+		function updateFieldIfNotNull(fieldName, value, precision = 10) {
+			if (value != null) document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+		}
+
+		function handleMotion(event) {
+			updateFieldIfNotNull("Gyroscope_z", event.rotationRate.alpha);
+			updateFieldIfNotNull("Gyroscope_x", event.rotationRate.beta);
+			updateFieldIfNotNull("Gyroscope_y", event.rotationRate.gamma);
+			incrementEventCount();
+		}
+
+		let is_running = false;
+		let demo_button = document.getElementById("start_demo");
+		demo_button.onclick = function (e) {
+			e.preventDefault();
+
+			// Request permission for iOS 13+ devices
+			if (DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === "function") {
+				DeviceMotionEvent.requestPermission();
 			}
-		}, e);
-	}
-	window.addEventListener("click", firstClick);
-	window.addEventListener("touchend", firstClick);
-	firstClick();
+
+			if (is_running) {
+				window.removeEventListener("devicemotion", handleMotion);
+				demo_button.innerHTML = "Start demo";
+				demo_button.classList.add("btn-success");
+				demo_button.classList.remove("btn-danger");
+				is_running = false;
+			} else {
+				window.addEventListener("devicemotion", handleMotion);
+				document.getElementById("start_demo").innerHTML = "Stop demo";
+				demo_button.classList.remove("btn-success");
+				demo_button.classList.add("btn-danger");
+				is_running = true;
+			}
+		};
 	</script>
-</body></html>
+
+	<!-- Javascript Support -->
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

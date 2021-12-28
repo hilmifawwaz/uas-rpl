@@ -14,6 +14,12 @@
     <meta name="theme-color" content="#FFE1C4">
     <script src="/assets/js/app.js"></script>
     <title>UAS RPL</title>
+
+    <style>
+      .btn {
+        margin-bottom: 5px;
+      }
+    </style>
   </head>
 
   <?php include 'navbar.php'; ?>
