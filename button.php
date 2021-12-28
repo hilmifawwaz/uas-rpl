@@ -10,7 +10,7 @@
 
 <a class="btn btn-primary" href="bluetooth.php" role="button">Bluetooth</a>
 
-<a class="btn btn-primary" href="https://contact-picker.glitch.me/" role="button">Contact</a>
+<a class="btn btn-primary" href="contac.html" role="button">Contact</a>
 
 <a class="btn btn-primary" href="/face-detec/face-detection.html" role="button">Face Detecion</a>
 
@@ -19,5 +19,3 @@
 <a class="btn btn-primary" href="accelerometer.php" role="button">Accelerometer</a>
 
 <a class="btn btn-primary" href="gyro.html" role="button">Gyroscope</a>
-
-<a class="btn btn-primary" href="contac.html" role="button">Contact2</a>
