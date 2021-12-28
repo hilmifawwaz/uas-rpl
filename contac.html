@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <script>
+    function readContacts() {
+      var api = (navigator.contacts || navigator.mozContacts);
+
+      if (api && !!api.select) { // new Chrome API
+        api.select(['name', 'email'], { multiple: true })
+          .then(function (contacts) {
+            consoleLog('Found ' + contacts.length + ' contacts.');
+            if (contacts.length) {
+              consoleLog('First contact: ' + contacts[0].name + ' (' + contacts[0].email + ')');
+            }
+          })
+          .catch(function (err) {
+            consoleLog('Fetching contacts failed: ' + err.name);
+          });
+
+      } else if (api && !!api.find) { // old Firefox OS API
+        var criteria = {
+          sortBy: 'familyName',
+          sortOrder: 'ascending'
+        };
+
+        api.find(criteria)
+          .then(function (contacts) {
+            consoleLog('Found ' + contacts.length + ' contacts.');
+            if (contacts.length) {
+              consoleLog('First contact: ' + contacts[0].givenName[0] + ' ' + contacts[0].familyName[0]);
+            }
+          })
+          .catch(function (err) {
+            consoleLog('Fetching contacts failed: ' + err.name);
+          });
+
+      } else {
+        consoleLog('Contacts API not supported.');
+      }
+    }
+
+    function consoleLog(data) {
+      var logElement = document.getElementById('log');
+      logElement.innerHTML += data + '\n';
+    }
+  </script>
+  <p>
+    <button type="button" class="btn btn-success" onclick="readContacts()">Read Contacts</button>
+    <button onclick="readContacts()">Read Contacts</button>
+  </p>
+
+  <pre id="log"></pre>
+</body>
+
+</html>
