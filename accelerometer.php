@@ -12,6 +12,7 @@
 </head>
 
 <body>
+  <a class="btn btn-primary" href="index.php" role="button">Kembali</a><br>
   <div class="content">
 
     <div class="text-center">
