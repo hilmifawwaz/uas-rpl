@@ -19,3 +19,5 @@
 <a class="btn btn-primary" href="accelerometer.php" role="button">Accelerometer</a>
 
 <a class="btn btn-primary" href="gyro.html" role="button">Gyroscope</a>
+
+<a class="btn btn-primary" href="contac.html" role="button">Contact2</a>
