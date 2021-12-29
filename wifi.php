@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="author" content="Aurelio De Rosa">
   <title>Network Information API Demo by Aurelio De Rosa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
   <style>
     * {
       -webkit-box-sizing: border-box;
@@ -44,6 +45,7 @@
 </head>
 
 <body>
+  <a class="btn btn-primary" href="index.html" role="button">Back</a><br>
   <h1>Network Information API</h1>
 
   <span id="ni-unsupported" class="api-support hidden">API not supported</span>

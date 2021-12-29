@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+  <a class="btn btn-primary" href="index.html" role="button">Back</a><br>
   <script>
     function readContacts() {
       var api = (navigator.contacts || navigator.mozContacts);
@@ -58,7 +58,6 @@
   </script>
   <p>
     <button type="button" class="btn btn-success" onclick="readContacts()">Read Contacts</button>
-    <button onclick="readContacts()">Read Contacts</button>
   </p>
 
   <pre id="log"></pre>
