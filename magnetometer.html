@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnetometer</title>
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .magnetometer {
+      position: relative;
+      border-radius: 100%;
+      margin: 0 auto;
+      width: 350px;
+      height: 350px;
+    }
+
+    .magnetometer span {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 100%;
+      width: 2px;
+    }
+
+    .magnetometer span:after,
+    .magnetometer span:before {
+      position: absolute;
+      left: 0;
+      content: "";
+      background-color: rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 3%;
+    }
+
+    .magnetometer span:after {
+      top: 0;
+    }
+
+    .magnetometer span:before {
+      bottom: 0;
+    }
+
+    .magnetometer span.fives:after,
+    .magnetometer span.fives:before {
+      height: 6%;
+      width: 3px;
+    }
+
+    .magnetometer .ticks {
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      width: 0;
+      height: 40%;
+    }
+
+    .magnetometer .ticks>div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      transform-origin: 50% 100%;
+    }
+
+    .magnetometer .ticks>div i {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      font-style: normal;
+      font-size: 26px;
+      color: rgba(0, 0, 0, 0.2);
+      font-family: "Titillium Web", sans-serif;
+      font-weight: 600;
+    }
+
+    .magnetometer .ticks>div i.north {
+      transform: translateX(-50%);
+    }
+
+    .magnetometer .ticks>div i.east {
+      transform: translateX(-50%) rotate(-90deg);
+    }
+
+    .magnetometer .ticks>div i.south {
+      transform: translateX(-50%) rotate(-180deg);
+    }
+
+    .magnetometer .ticks>div i.west {
+      transform: translateX(-50%) rotate(90deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(2) {
+      transform: rotate(30deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(3) {
+      transform: rotate(60deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(4) {
+      transform: rotate(90deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(5) {
+      transform: rotate(120deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(6) {
+      transform: rotate(150deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(7) {
+      transform: rotate(180deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(8) {
+      transform: rotate(210deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(9) {
+      transform: rotate(240deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(10) {
+      transform: rotate(270deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(11) {
+      transform: rotate(300deg);
+    }
+
+    .magnetometer .ticks>div:nth-child(12) {
+      transform: rotate(330deg);
+    }
+
+    .magnetometer .hold-main-arrow {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      left: calc(50% - $magnetometer-size / 2);
+      top: calc(50% - $magnetometer-size / 2);
+      border-radius: 100%;
+      z-index: 10;
+    }
+
+    .magnetometer .hold-main-arrow .main-arrow {
+      width: 0;
+      height: 0;
+      top: 0;
+      left: 50%;
+      margin-left: -19px;
+      border-bottom: 175px solid #4A89DC;
+      transform: rotate(-45deg);
+      transform-origin: 50% 175px;
+    }
+
+    .magnetometer .hold-main-arrow .main-arrow,
+    .magnetometer .hold-main-arrow .main-arrow:after {
+      position: absolute;
+      border-left: 19px solid transparent;
+      border-right: 19px solid transparent;
+    }
+
+    .magnetometer .hold-main-arrow .main-arrow:after {
+      content: "";
+      top: 0;
+      left: -19px;
+      border-bottom: 175px solid #ED5565;
+    }
+
+    .magnetometer .hold-main-arrow .main-arrow.down {
+      transform: rotate(135deg);
+      transform-origin: 50% 175px;
+    }
+
+    .magnetometer .hold-main-arrow .main-arrow.down:after {
+      opacity: 0;
+    }
+
+    .magnetometer .center {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      top: 50%;
+      left: 50%;
+      margin: -13px -13px 0;
+      border-radius: 100%;
+      background-color: #FFF;
+      box-shadow: 0 0 0 6px rgba(67, 74, 84, 0.3);
+      z-index: 10;
+    }
+
+    @-webkit-keyframes moveUp {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(540deg);
+      }
+    }
+
+    @keyframes moveUp {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(540deg);
+      }
+    }
+
+    @-webkit-keyframes moveDown {
+      0% {
+        transform: rotate(180deg);
+      }
+
+      100% {
+        transform: rotate(720deg);
+      }
+    }
+
+    @keyframes moveDown {
+      0% {
+        transform: rotate(180deg);
+      }
+
+      100% {
+        transform: rotate(720deg);
+      }
+    }
+
+    .main-arrow {
+      -webkit-animation: moveUp 5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
+      animation: moveUp 5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
+    }
+
+    .main-arrow.down {
+      -webkit-animation: moveDown 5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
+      animation: moveDown 5s cubic-bezier(0.77, 0, 0.175, 1) infinite alternate;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Magnetometer Access</h1>
+  <div class="magnetometer">
+    <div class="ticks">
+      <div><i class="north">n</i></div>
+      <div></div>
+      <div></div>
+      <div><i class="east">e</i></div>
+      <div></div>
+      <div></div>
+      <div><i class="south">s</i></div>
+      <div></div>
+      <div></div>
+      <div><i class="west">w</i></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="hold-main-arrow">
+      <div class="main-arrow"></div>
+      <div class="main-arrow down"></div>
+    </div>
+    <div class="center"></div>
+  </div>
+</body>
+
+</html>
